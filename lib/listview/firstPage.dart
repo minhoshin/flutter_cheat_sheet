@@ -8,6 +8,7 @@ class FirstApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('list is $list');
     return Scaffold(
       body: Container(
         child: Center(

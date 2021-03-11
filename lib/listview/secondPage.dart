@@ -7,7 +7,7 @@ class SecondApp extends StatefulWidget {
 
   List<Animal> list;
 
-  SecondApp({Key key, this.list}) : super(key: key);
+  SecondApp({Key key, @required this.list}) : super(key: key);
 }
 
 class _SecondAppState extends State<SecondApp> {
@@ -18,6 +18,7 @@ class _SecondAppState extends State<SecondApp> {
 
   @override
   Widget build(BuildContext context) {
+    // print('list is $list');
     return Scaffold(
         body: Container(
       child: Center(
