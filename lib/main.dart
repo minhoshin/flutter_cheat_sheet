@@ -25,12 +25,25 @@ class _HttpAppState extends State<HttpApp> {
   // String result = '';
   List data;
   TextEditingController _editingController;
+  ScrollController _scrollController;
+  int page = 1;
 
   @override
   void initState() {
     super.initState();
     data = new List();
     _editingController = new TextEditingController();
+    _scrollController = new ScrollController();
+
+    _scrollController.addListener(() {
+      if (_scrollController.offset >=
+              _scrollController.position.maxScrollExtent &&
+          !_scrollController.position.outOfRange) {
+        print('bottom');
+        page++;
+        getJSONData();
+      }
+    });
   }
 
   @override
@@ -87,6 +100,7 @@ class _HttpAppState extends State<HttpApp> {
                     );
                   },
                   itemCount: data.length,
+                  controller: _scrollController,
                 ),
         ),
       ),
@@ -97,6 +111,8 @@ class _HttpAppState extends State<HttpApp> {
           // setState(() {
           //   result = response.body;
           // });
+          page = 1;
+          data.clear();
           getJSONData();
         },
         child: Icon(Icons.file_download),
@@ -105,15 +121,26 @@ class _HttpAppState extends State<HttpApp> {
   }
 
   Future<String> getJSONData() async {
-    print('$_editingController');
-    var url = 'https://dapi.kakao.com/v3/search/book?target=title&query=${_editingController.value.text}';
+    print('_editingController.value.text is ${_editingController.value.text}');
+    var url;
+    var query;
+    if (_editingController.value.text == '') {
+      print('_editingController.value.text is null');
+      query =
+          'https://dapi.kakao.com/v3/search/book?target=title&page=$page&query="doit"';
+    } else {
+      print('_editingController.value.text is not null');
+      query =
+          'https://dapi.kakao.com/v3/search/book?target=title&page=$page&query=${_editingController.value.text}';
+    }
+    url = query;
+    // var url = 'https://dapi.kakao.com/v3/search/book?target=title&page=$page&query=${_editingController.value.text}';
     var response = await http.get(url,
         headers: {"Authorization": "KakaoAK a03be22b7e763784bf6f9c92f0c18201"});
     print(response.body);
     setState(() {
       var dataConvertToJSJON = json.decode(response.body);
       List result = dataConvertToJSJON['documents'];
-      data.clear();
       data.addAll(result);
     });
     return response.body;
