@@ -12,17 +12,17 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.blue,
       ),
-      home: FirstPage(title: 'Main Page'),
       debugShowCheckedModeBanner: false,
+      initialRoute: '/',
+      routes: {
+        '/': (context) => FirstPage(),
+        '/second': (context) => SecondPage(),
+      },
     );
   }
 }
 
 class FirstPage extends StatefulWidget {
-  FirstPage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
   @override
   _FirstPageState createState() => _FirstPageState();
 }
@@ -32,7 +32,7 @@ class _FirstPageState extends State<FirstPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text('Main Page'),
       ),
       body: Container(
         child: Center(
@@ -41,7 +41,7 @@ class _FirstPageState extends State<FirstPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => SecondPage()));
+          Navigator.of(context).pushNamed('/second');
         },
         child: Icon(Icons.add),
       ),
@@ -59,14 +59,12 @@ class SecondPage extends StatelessWidget {
       body: Container(
         child: Center(
             child: RaisedButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Back'),
-            )
-        ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: Text('Back'),
+        )),
       ),
     );
   }
 }
-

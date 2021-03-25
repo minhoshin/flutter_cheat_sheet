@@ -1,72 +1,29 @@
 import 'package:flutter/material.dart';
+import 'routesDetail.dart';
+import 'routesSecondDetail.dart';
+import 'routesThirdDetail.dart';
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  static const String _title = 'routes example';
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'navigator example',
+      title: _title,
       theme: ThemeData(
         primaryColor: Colors.blue,
       ),
-      home: FirstPage(title: 'Main Page'),
       debugShowCheckedModeBanner: false,
+      initialRoute: '/',
+      routes: {
+        '/': (context) => RoutesDetail(),
+        '/second': (context) => RoutesSecondDetail(),
+        '/third': (context) => RoutesThirdDetail(),
+      },
     );
   }
 }
-
-class FirstPage extends StatefulWidget {
-  FirstPage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  _FirstPageState createState() => _FirstPageState();
-}
-
-class _FirstPageState extends State<FirstPage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Container(
-        child: Center(
-          child: Text('Main Page'),
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => SecondPage()));
-        },
-        child: Icon(Icons.add),
-      ),
-    );
-  }
-}
-
-class SecondPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Sub Page'),
-      ),
-      body: Container(
-        child: Center(
-          child: RaisedButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: Text('Back'),
-          )
-        ),
-      ),
-    );
-  }
-}
-
